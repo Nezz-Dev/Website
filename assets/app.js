@@ -88,8 +88,8 @@ const App = (function(){
 
   function loadServerInfo(){
     // Mocked data - in real use replace with fetch to API
-    document.getElementById('server-version').textContent = '1.2.3';
-    document.getElementById('server-uptime').textContent = '3 days 4 hours';
+    document.getElementById('server-version').textContent = '1.20.1 Forge';
+    document.getElementById('server-uptime').textContent = '3小时';
   }
 
   return { init: function(){ initLangButtons(); initTheme(); }, loadServerInfo, translate: translatePage };
