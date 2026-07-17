@@ -22,6 +22,7 @@
 
   <main class="container">
     <section class="hero">
+      <div class="grid-bg" aria-hidden="true"></div>
       <div class="left">
         <h1 data-i18n="home.title">服务器信息</h1>
         <p class="muted">快速查看服务器版本与运行状态</p>
@@ -29,9 +30,10 @@
           <a class="btn" href="chat.html" data-i18n="home.gotoChat">进入群聊</a>
         </div>
       </div>
-      <div class="right server-card card">
-        <div><strong data-i18n="home.version">版本：</strong><span id="server-version">—</span></div>
-        <div class="small"><strong data-i18n="home.uptime">运行时间：</strong><span id="server-uptime">—</span></div>
+      <div class="right server-card card terminal">
+        <div class="line"><strong data-i18n="home.version">版本：</strong><span id="server-version">—</span></div>
+        <div class="line small"><strong data-i18n="home.uptime">运行时间：</strong><span id="server-uptime">—</span></div>
+        <div style="margin-top:10px;font-size:13px;color:var(--muted)">Status: <span class="neon">Online</span></div>
       </div>
     </section>
 
