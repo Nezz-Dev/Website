@@ -11,3 +11,12 @@ main{max-width:900px;margin:24px auto;padding:18px;background:#fff;border-radius
 #messages li{padding:8px;border-bottom:1px solid #f0f0f0}
 #chat-form{display:flex;gap:8px}
 #chat-form input{flex:1;padding:8px}
+
+/* messages page styles */
+#messages-list .message-item{border-bottom:1px solid #eee;padding:12px 0}
+#message-form{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+#message-form input,#message-form textarea{padding:8px;border:1px solid #ddd;border-radius:4px}
+#message-form textarea{min-height:120px;resize:vertical}
+#message-form button{align-self:flex-end;padding:8px 14px;border-radius:4px;background:#1976d2;color:#fff;border:none}
+#pagination{display:flex;gap:6px;margin-top:12px}
+#pagination button{padding:6px 10px}
