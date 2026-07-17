@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>公告</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html" data-i18n="nav.home">主页</a>
+      <a href="chat.html" data-i18n="nav.chat">群聊</a>
+      <a href="announcements.html" data-i18n="nav.announcements">公告</a>
+      <div class="lang-switch">
+        <button id="lang-zh">中文</button>
+        <button id="lang-en">EN</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <h1 data-i18n="ann.title">公告</h1>
+
+    <section id="ann-list"></section>
+
+    <div id="pagination"></div>
+  </main>
+
+  <script src="assets/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      App.init();
+      Announcements.init();
+    });
+  </script>
+</body>
+</html>

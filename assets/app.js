@@ -1,0 +1,99 @@
+const i18n = {
+  en: {
+    nav: { home: 'Home', chat: 'Chat', announcements: 'Announcements' },
+    home: { title: 'Server Info', version: 'Version:', uptime: 'Uptime:', quick: 'Quick Links', gotoChat: 'Go to Chat', gotoAnnouncements: 'View Announcements' },
+    chat: { title: 'Group Chat', send: 'Send' },
+    ann: { title: 'Announcements' }
+  },
+  zh: {
+    nav: { home: '主页', chat: '群聊', announcements: '公告' },
+    home: { title: '服务器信息', version: '版本：', uptime: '运行时间：', quick: '快速链接', gotoChat: '进入群聊', gotoAnnouncements: '查看公告' },
+    chat: { title: '群聊', send: '发送' },
+    ann: { title: '公告' }
+  }
+};
+
+const App = (function(){
+  let lang = localStorage.getItem('lang') || 'zh';
+
+  function translatePage(){
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const key = el.getAttribute('data-i18n');
+      const parts = key.split('.');
+      let cur = i18n[lang];
+      for (let p of parts){ if (cur) cur = cur[p]; }
+      if (cur) el.textContent = cur;
+    });
+  }
+
+  function initLangButtons(){
+    document.getElementById('lang-zh').addEventListener('click', ()=>{ lang='zh'; localStorage.setItem('lang', 'zh'); translatePage(); });
+    document.getElementById('lang-en').addEventListener('click', ()=>{ lang='en'; localStorage.setItem('lang', 'en'); translatePage(); });
+    translatePage();
+  }
+
+  function loadServerInfo(){
+    // Mocked data - in real use replace with fetch to API
+    document.getElementById('server-version').textContent = '1.2.3';
+    document.getElementById('server-uptime').textContent = '3 days 4 hours';
+  }
+
+  return { init: initLangButtons, loadServerInfo };
+})();
+
+const Chat = (function(){
+  const messagesEl = document.getElementById('messages');
+  function addMessage(user, msg){
+    const li = document.createElement('li');
+    li.textContent = `${user}: ${msg}`;
+    messagesEl.appendChild(li);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function init(){
+    const form = document.getElementById('chat-form');
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      const user = document.getElementById('username').value.trim();
+      const msg = document.getElementById('message').value.trim();
+      if (!user || !msg) return;
+      addMessage(user, msg);
+      form.reset();
+    });
+  }
+
+  return { init };
+})();
+
+const Announcements = (function(){
+  const perPage = 5;
+  let page = 1;
+  const data = Array.from({length:23}).map((_,i)=>({id:i+1,title:`公告 #${i+1}`,content:`这是第 ${i+1} 条公告` }));
+
+  function render(){
+    const list = document.getElementById('ann-list');
+    const start = (page-1)*perPage; const items = data.slice(start,start+perPage);
+    list.innerHTML = '';
+    items.forEach(a=>{
+      const div = document.createElement('div');
+      div.innerHTML = `<h3>${a.title}</h3><p>${a.content}</p>`;
+      list.appendChild(div);
+    });
+    renderPagination();
+  }
+
+  function renderPagination(){
+    const total = Math.ceil(data.length/perPage);
+    const pg = document.getElementById('pagination');
+    pg.innerHTML = '';
+    for (let i=1;i<=total;i++){
+      const btn = document.createElement('button');
+      btn.textContent = i; if (i===page) btn.disabled = true;
+      btn.addEventListener('click', ()=>{ page=i; render(); });
+      pg.appendChild(btn);
+    }
+  }
+
+  function init(){ render(); }
+  return { init };
+})();
