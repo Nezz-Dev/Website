@@ -18,6 +18,17 @@ nav a:hover{color:#fff;background:linear-gradient(90deg,rgba(255,255,255,0.03),t
 .lang-switch button{background:transparent;border:1px solid rgba(255,255,255,0.05);color:var(--muted);padding:6px 10px;border-radius:8px;cursor:pointer}
 .lang-switch button:hover{color:#fff;border-color:rgba(255,255,255,0.12)}
 
+/* theme toggle button */
+.theme-toggle{display:inline-flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;border:1px solid transparent;background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent);color:var(--muted);cursor:pointer;font-weight:600}
+.theme-toggle:hover{border-color:rgba(255,255,255,0.06);color:#fff}
+.theme-toggle .icon{width:18px;height:18px;display:inline-block;transition:transform .35s ease,opacity .25s}
+.theme-toggle .icon svg{width:100%;height:100%;display:block}
+.theme-toggle.is-light{background:linear-gradient(90deg,rgba(0,0,0,0.03),transparent);color:var(--muted)}
+
+/* smooth transitions for theme change */
+body, header, .card, .btn, .server-card, .ann-item, .hero{transition:background-color .45s ease, color .35s ease, border-color .35s ease, box-shadow .45s ease}
+
+
 .container{max-width:1100px;margin:36px auto;padding:0 20px}
 .hero{display:flex;align-items:center;gap:24px;padding:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:var(--radius);box-shadow:0 6px 30px rgba(2,6,23,0.6)}
 .hero{position:relative;overflow:hidden}
@@ -71,4 +82,27 @@ footer{max-width:1100px;margin:36px auto;padding:20px;color:var(--muted);text-al
   .grid{grid-template-columns:repeat(1,1fr)}
   .card,.server-card{grid-column:span 1}
   .hero h1{font-size:20px}
+}
+
+/* Light theme overrides */
+[data-theme="light"]{
+  --bg: #f6f9fc;
+  --card: #ffffff;
+  --muted: #596273;
+  --accent: #2563eb; /* blue */
+  --glass: rgba(3,7,18,0.03);
+  color-scheme: light;
+}
+
+/* Accessibility & focus */
+.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+.skip-link:focus{left:8px;top:8px;width:auto;height:auto;background:#000;color:#fff;padding:8px 12px;border-radius:6px;z-index:9999}
+
+:focus{outline:none}
+:focus-visible{outline:3px solid rgba(79,70,229,0.6);outline-offset:3px;border-radius:6px}
+
+/* High contrast mode support */
+@media (prefers-contrast:more){
+  :root{--muted:#8892a6}
+  nav a{color:var(--muted)}
 }

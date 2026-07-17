@@ -51,13 +51,40 @@ const App = (function(){
     translatePage();
   }
 
+  function initTheme(){
+    const btn = document.createElement('button');
+    btn.className = 'theme-toggle';
+    btn.setAttribute('aria-label','Toggle theme');
+    btn.innerHTML = `<span class="icon icon-sun" aria-hidden="true">\n      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4V2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 22v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.93 4.93L3.51 3.51" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.49 20.49l-1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12H4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.93 19.07L3.51 20.49" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.49 3.51l-1.42 1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span><span class="icon icon-moon" aria-hidden="true">\n      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>`;
+    document.querySelector('nav').appendChild(btn);
+    const saved = localStorage.getItem('theme')||'dark';
+    if (saved==='light'){
+      document.documentElement.setAttribute('data-theme','light');
+      btn.classList.add('is-light');
+    }
+    btn.addEventListener('click', ()=>{
+      const isLight = document.documentElement.getAttribute('data-theme')==='light';
+      if (isLight){
+        document.documentElement.removeAttribute('data-theme');
+        btn.classList.remove('is-light');
+        localStorage.setItem('theme','dark');
+      } else {
+        document.documentElement.setAttribute('data-theme','light');
+        btn.classList.add('is-light');
+        localStorage.setItem('theme','light');
+      }
+    });
+  }
+
   function loadServerInfo(){
     // Mocked data - in real use replace with fetch to API
     document.getElementById('server-version').textContent = '1.2.3';
     document.getElementById('server-uptime').textContent = '3 days 4 hours';
   }
 
-  return { init: initLangButtons, loadServerInfo, translate: translatePage };
+  return { init: function(){ initLangButtons(); initTheme(); }, loadServerInfo, translate: translatePage };
 })();
 
 // Messages feature removed as requested
