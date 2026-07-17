@@ -75,6 +75,8 @@ body, header, .card, .btn, .server-card, .ann-item, .hero{transition:background-
 .ann-item{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
 .ann-item h3{margin:0 0 8px;color:#fff}
 .ann-item p{margin:0;color:var(--muted)}
+/* pinned badge */
+.badge{display:inline-block;background:var(--accent);color:#fff;padding:4px 8px;border-radius:999px;font-size:12px;margin-left:8px}
 
 footer{max-width:1100px;margin:36px auto;padding:20px;color:var(--muted);text-align:center}
 

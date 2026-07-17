@@ -103,23 +103,29 @@ const Announcements = (function(){
   const perPage = 5;
   let page = 1;
   const data = Array.from({length:23}).map((_,i)=>({id:i+1,title:`公告 #${i+1}`,content:`这是第 ${i+1} 条公告` }));
+  // mark the latest announcement as pinned by default
+  if (data.length>0) data[data.length-1].pinned = true;
 
   function render(){
     const list = document.getElementById('ann-list');
-    const start = (page-1)*perPage; const items = data.slice(start,start+perPage);
+    // sort so pinned items appear first, then by id desc (newest first)
+    const sorted = data.slice().sort((a,b)=>{ if ((b.pinned?1:0) - (a.pinned?1:0) !==0) return (b.pinned?1:0) - (a.pinned?1:0); return b.id - a.id; });
+    const start = (page-1)*perPage; const items = sorted.slice(start,start+perPage);
     list.innerHTML = '';
     items.forEach(a=>{
       const div = document.createElement('div');
       div.className = 'ann-item';
-      div.innerHTML = `<h3>${a.title}</h3><p>${a.content}</p>`;
+      div.innerHTML = `<h3>${a.title}${a.pinned?` <span class="badge" data-i18n="ann.pinned">置顶</span>`:''}</h3><p>${a.content}</p>`;
       list.appendChild(div);
     });
     // also render preview if exists
     const preview = document.getElementById('ann-preview');
     if (preview){
       preview.innerHTML = '';
-      data.slice(0,3).forEach(a=>{
-        const d = document.createElement('div'); d.className='ann-item'; d.innerHTML = `<h3>${a.title}</h3><p>${a.content}</p>`; preview.appendChild(d);
+      // show pinned first in preview
+      const previewItems = sorted.slice(0,3);
+      previewItems.forEach(a=>{
+        const d = document.createElement('div'); d.className='ann-item'; d.innerHTML = `<h3>${a.title}${a.pinned?` <span class="badge" data-i18n="ann.pinned">置顶</span>`:''}</h3><p>${a.content}</p>`; preview.appendChild(d);
       });
     }
     renderPagination();
@@ -135,6 +141,7 @@ const Announcements = (function(){
       btn.addEventListener('click', ()=>{ page=i; render(); });
       pg.appendChild(btn);
     }
+    // No-op change to ensure file is updated
   }
 
   function init(){ render(); }
