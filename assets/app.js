@@ -15,6 +15,12 @@ const i18n = {
   }
 };
 
+// add placeholders keys
+i18n.en.messages.namePlaceholder = 'Your name';
+i18n.en.messages.contentPlaceholder = 'Your message';
+i18n.zh.messages.namePlaceholder = '姓名';
+i18n.zh.messages.contentPlaceholder = '留言';
+
 // add english nav messages
 i18n.en.nav.messages = 'Messages';
 
@@ -28,6 +34,14 @@ const App = (function(){
       let cur = i18n[lang];
       for (let p of parts){ if (cur) cur = cur[p]; }
       if (cur) el.textContent = cur;
+    });
+    // placeholders translation (use data-i18n-placeholder)
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+      const key = el.getAttribute('data-i18n-placeholder');
+      const parts = key.split('.');
+      let cur = i18n[lang];
+      for (let p of parts){ if (cur) cur = cur[p]; }
+      if (cur) el.placeholder = cur;
     });
   }
 
@@ -43,7 +57,7 @@ const App = (function(){
     document.getElementById('server-uptime').textContent = '3 days 4 hours';
   }
 
-  return { init: initLangButtons, loadServerInfo };
+  return { init: initLangButtons, loadServerInfo, translate: translatePage };
 })();
 
 const Messages = (function(){
