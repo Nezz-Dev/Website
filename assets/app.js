@@ -1,15 +1,14 @@
 const i18n = {
   en: {
-    nav: { home: 'Home', chat: 'Chat', announcements: 'Announcements' },
-    home: { title: 'Server Info', version: 'Version:', uptime: 'Uptime:', quick: 'Quick Links', gotoChat: 'Go to Chat', gotoAnnouncements: 'View Announcements' },
-    chat: { title: 'Group Chat', send: 'Send' },
+    nav: { home: 'Home', announcements: 'Announcements' },
+    home: { title: 'Server Info', version: 'Version:', uptime: 'Uptime:', quick: 'Quick Links', gotoAnnouncements: 'View Announcements' },
+    // chat removed
     ann: { title: 'Announcements' },
     messages: { title: 'Messages', submit: 'Submit', none: 'No messages yet' }
   },
   zh: {
-    nav: { home: '主页', chat: '群聊', announcements: '公告', messages: '留言' },
-    home: { title: '服务器信息', version: '版本：', uptime: '运行时间：', quick: '快速链接', gotoChat: '进入群聊', gotoAnnouncements: '查看公告' },
-    chat: { title: '群聊', send: '发送' },
+    nav: { home: '主页', announcements: '公告', messages: '留言' },
+    home: { title: '服务器信息', version: '版本：', uptime: '运行时间：', quick: '快速链接', gotoAnnouncements: '查看公告' },
     ann: { title: '公告' },
     messages: { title: '留言板', submit: '提交', none: '暂无留言' }
   }
