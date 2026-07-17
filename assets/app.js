@@ -58,21 +58,30 @@ const App = (function(){
     btn.innerHTML = `<span class="icon icon-sun" aria-hidden="true">\n      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4V2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 22v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.93 4.93L3.51 3.51" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.49 20.49l-1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12H4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.93 19.07L3.51 20.49" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.49 3.51l-1.42 1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </span><span class="icon icon-moon" aria-hidden="true">\n      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </span>`;
-    document.querySelector('nav').appendChild(btn);
+    // place the button next to language switch if available
+    const langWrap = document.querySelector('.lang-switch');
+    if (langWrap){ langWrap.parentNode.insertBefore(btn, langWrap); }
+    else { document.querySelector('nav').appendChild(btn); }
     const saved = localStorage.getItem('theme')||'dark';
     if (saved==='light'){
       document.documentElement.setAttribute('data-theme','light');
       btn.classList.add('is-light');
+      btn.setAttribute('aria-pressed','true');
     }
     btn.addEventListener('click', ()=>{
       const isLight = document.documentElement.getAttribute('data-theme')==='light';
+      // animate
+      btn.classList.add('animating');
+      setTimeout(()=>btn.classList.remove('animating'),350);
       if (isLight){
         document.documentElement.removeAttribute('data-theme');
         btn.classList.remove('is-light');
+        btn.setAttribute('aria-pressed','false');
         localStorage.setItem('theme','dark');
       } else {
         document.documentElement.setAttribute('data-theme','light');
         btn.classList.add('is-light');
+        btn.setAttribute('aria-pressed','true');
         localStorage.setItem('theme','light');
       }
     });

@@ -28,6 +28,14 @@ nav a:hover{color:#fff;background:linear-gradient(90deg,rgba(255,255,255,0.03),t
 /* smooth transitions for theme change */
 body, header, .card, .btn, .server-card, .ann-item, .hero{transition:background-color .45s ease, color .35s ease, border-color .35s ease, box-shadow .45s ease}
 
+/* theme toggle animation */
+.theme-toggle.animating .icon{transform:rotate(20deg) scale(0.95)}
+.theme-toggle .icon.icon-moon{opacity:0.45;transform:translateY(0)}
+.theme-toggle.is-light .icon.icon-moon{opacity:1}
+.theme-toggle.is-light .icon.icon-sun{opacity:0.45}
+
+.theme-toggle[aria-pressed="true"]{box-shadow:0 6px 18px rgba(79,70,229,0.14)}
+
 
 .container{max-width:1100px;margin:36px auto;padding:0 20px}
 .hero{display:flex;align-items:center;gap:24px;padding:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:var(--radius);box-shadow:0 6px 30px rgba(2,6,23,0.6)}
