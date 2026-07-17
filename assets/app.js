@@ -60,46 +60,7 @@ const App = (function(){
   return { init: initLangButtons, loadServerInfo, translate: translatePage };
 })();
 
-const Messages = (function(){
-  const storageKey = 'site_messages_v1';
-  function loadAll(){
-    try{ return JSON.parse(localStorage.getItem(storageKey)||'[]'); }catch(e){ return []; }
-  }
-  function saveAll(arr){ localStorage.setItem(storageKey, JSON.stringify(arr)); }
-
-  function render(){
-    const list = document.getElementById('messages-list');
-    const data = loadAll();
-    list.innerHTML = '';
-    if (data.length===0){ list.innerHTML = '<p data-i18n="messages.none">暂无留言</p>'; return; }
-    data.slice().reverse().forEach(m=>{
-      const div = document.createElement('div');
-      div.className = 'message-item';
-      div.innerHTML = `<h4>${escapeHtml(m.name)} <small>${new Date(m.time).toLocaleString()}</small></h4><p>${escapeHtml(m.content)}</p>`;
-      list.appendChild(div);
-    });
-  }
-
-  function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-  function init(){
-    render();
-    const form = document.getElementById('message-form');
-    form.addEventListener('submit', e=>{
-      e.preventDefault();
-      const name = document.getElementById('msg-name').value.trim();
-      const content = document.getElementById('msg-content').value.trim();
-      if (!name || !content) return;
-      const data = loadAll();
-      data.push({ name, content, time: Date.now() });
-      saveAll(data);
-      form.reset();
-      render();
-    });
-  }
-
-  return { init };
-})();
+// Messages feature removed as requested
 
 const Chat = (function(){
   const messagesEl = document.getElementById('messages');
