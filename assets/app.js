@@ -102,38 +102,60 @@ const App = (function(){
 const Announcements = (function(){
   const perPage = 5;
   let page = 1;
-  const data = Array.from({length:23}).map((_,i)=>({id:i+1,title:`公告 #${i+1}`,content:`这是第 ${i+1} 条公告` }));
-  // mark the latest announcement as pinned by default
-  if (data.length>0) data[data.length-1].pinned = true;
+  let data = [];
+
+  // load announcement list (index.json should contain array of filenames)
+  async function loadData(){
+    try{
+      const idxRes = await fetch('data/announcements/index.json');
+      if (!idxRes.ok) throw new Error('index.json not found');
+      const files = await idxRes.json();
+      // fetch each file in parallel
+      const promises = files.map(f=>fetch('data/announcements/'+f).then(r=>{ if(!r.ok) throw new Error(f+' not found'); return r.json(); }));
+      const items = await Promise.all(promises);
+      data = items.filter(Boolean).map(it=>({ ...it }));
+      // ensure id is number
+      data.forEach(d=>{ d.id = Number(d.id); });
+      // if no pinned specified, leave as-is
+    }catch(err){
+      console.error('Failed to load announcements:', err);
+      // fallback: empty list
+      data = [];
+    }
+  }
 
   function render(){
     const list = document.getElementById('ann-list');
+    if (!list) return;
     // sort so pinned items appear first, then by id desc (newest first)
-    const sorted = data.slice().sort((a,b)=>{ if ((b.pinned?1:0) - (a.pinned?1:0) !==0) return (b.pinned?1:0) - (a.pinned?1:0); return b.id - a.id; });
+    const sorted = data.slice().sort((a,b)=>{ const ap = a.pinned?1:0; const bp = b.pinned?1:0; if (bp - ap !==0) return bp - ap; return (b.id||0) - (a.id||0); });
     const start = (page-1)*perPage; const items = sorted.slice(start,start+perPage);
     list.innerHTML = '';
     items.forEach(a=>{
       const div = document.createElement('div');
       div.className = 'ann-item';
-      div.innerHTML = `<h3>${a.title}${a.pinned?` <span class="badge" data-i18n="ann.pinned">置顶</span>`:''}</h3><p>${a.content}</p>`;
+      const badge = a.pinned?` <span class="badge" data-i18n="ann.pinned">置顶</span>`:'';
+      div.innerHTML = `<h3>${escapeHtml(a.title||'')}</h3>${badge}<p>${escapeHtml(a.content||'')}</p>`;
       list.appendChild(div);
     });
     // also render preview if exists
     const preview = document.getElementById('ann-preview');
     if (preview){
       preview.innerHTML = '';
-      // show pinned first in preview
       const previewItems = sorted.slice(0,3);
       previewItems.forEach(a=>{
-        const d = document.createElement('div'); d.className='ann-item'; d.innerHTML = `<h3>${a.title}${a.pinned?` <span class="badge" data-i18n="ann.pinned">置顶</span>`:''}</h3><p>${a.content}</p>`; preview.appendChild(d);
+        const d = document.createElement('div'); d.className='ann-item'; const badge = a.pinned?` <span class="badge" data-i18n="ann.pinned">置顶</span>`:''; d.innerHTML = `<h3>${escapeHtml(a.title||'')}</h3>${badge}<p>${escapeHtml(a.content||'')}</p>`; preview.appendChild(d);
       });
     }
     renderPagination();
   }
 
+  function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
   function renderPagination(){
-    const total = Math.ceil(data.length/perPage);
+    const total = Math.ceil(data.length/perPage) || 1;
     const pg = document.getElementById('pagination');
+    if (!pg) return;
     pg.innerHTML = '';
     for (let i=1;i<=total;i++){
       const btn = document.createElement('button');
@@ -141,9 +163,11 @@ const Announcements = (function(){
       btn.addEventListener('click', ()=>{ page=i; render(); });
       pg.appendChild(btn);
     }
-    // No-op change to ensure file is updated
   }
 
-  function init(){ render(); }
+  async function init(){
+    await loadData();
+    render();
+  }
   return { init };
 })();
