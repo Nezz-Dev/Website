@@ -89,29 +89,7 @@ const App = (function(){
 
 // Messages feature removed as requested
 
-const Chat = (function(){
-  const messagesEl = document.getElementById('messages');
-  function addMessage(user, msg){
-    const li = document.createElement('li');
-    li.textContent = `${user}: ${msg}`;
-    messagesEl.appendChild(li);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
-  }
-
-  function init(){
-    const form = document.getElementById('chat-form');
-    form.addEventListener('submit', e=>{
-      e.preventDefault();
-      const user = document.getElementById('username').value.trim();
-      const msg = document.getElementById('message').value.trim();
-      if (!user || !msg) return;
-      addMessage(user, msg);
-      form.reset();
-    });
-  }
-
-  return { init };
-})();
+// Chat page removed as requested
 
 const Announcements = (function(){
   const perPage = 5;
