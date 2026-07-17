@@ -97,9 +97,18 @@ const Announcements = (function(){
     list.innerHTML = '';
     items.forEach(a=>{
       const div = document.createElement('div');
+      div.className = 'ann-item';
       div.innerHTML = `<h3>${a.title}</h3><p>${a.content}</p>`;
       list.appendChild(div);
     });
+    // also render preview if exists
+    const preview = document.getElementById('ann-preview');
+    if (preview){
+      preview.innerHTML = '';
+      data.slice(0,3).forEach(a=>{
+        const d = document.createElement('div'); d.className='ann-item'; d.innerHTML = `<h3>${a.title}</h3><p>${a.content}</p>`; preview.appendChild(d);
+      });
+    }
     renderPagination();
   }
 
